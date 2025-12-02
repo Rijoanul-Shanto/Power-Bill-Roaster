@@ -6,8 +6,8 @@ A TypeScript-based DESCO prepaid electricity balance monitor that sends brutally
 
 Checks your DESCO prepaid electricity balance and sends savage email notifications at two critical thresholds:
 
-- **Below 150 BDT**: Warning shot - "Your Electricity About to Ghost You"
-- **Below 100 BDT**: DEFCON 1 - "You're About to Live in the Stone Age"
+- **Below 150 BDT** (configurable): Warning shot - "Your Electricity About to Ghost You"
+- **Below 100 BDT** (configurable): DEFCON 1 - "You're About to Live in the Stone Age"
 
 Runs automatically every 6 hours via GitHub Actions, so you'll never be caught off guard by a sudden blackout.
 
@@ -26,14 +26,19 @@ npm install
 Create a `.env` file in the project root:
 
 ```env
+# Required
 DESCO_ACCOUNT_NO=your_account_number
 DESCO_METER_NO=your_meter_number
 EMAIL_TO=recipient@example.com
 EMAIL_FROM=sender@example.com
 SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
 SMTP_PASS=your_app_password
+
+# Optional
+SMTP_PORT=587
+LOW_THRESHOLD=150
+CRITICAL_THRESHOLD=100
 ```
 
 ### 3. Set Up GitHub Secrets
@@ -42,14 +47,20 @@ For automated checks via GitHub Actions, add these secrets to your repository:
 
 1. Go to your repo's **Settings** → **Secrets and variables** → **Actions**
 2. Add the following secrets:
-    - `DESCO_ACCOUNT_NO`
-    - `DESCO_METER_NO`
-    - `EMAIL_TO`
-    - `EMAIL_FROM`
-    - `SMTP_HOST`
-    - `SMTP_PORT`
-    - `SMTP_USER`
-    - `SMTP_PASS`
+
+**Required:**
+- `DESCO_ACCOUNT_NO`
+- `DESCO_METER_NO`
+- `EMAIL_TO`
+- `EMAIL_FROM`
+- `SMTP_HOST`
+- `SMTP_USER`
+- `SMTP_PASS`
+
+**Optional:**
+- `SMTP_PORT` (defaults to 587)
+- `LOW_THRESHOLD` (defaults to 150)
+- `CRITICAL_THRESHOLD` (defaults to 100)
 
 ## Usage
 
@@ -82,10 +93,27 @@ Works with any SMTP provider. Common settings:
 
 ## How It Works
 
-1. Fetches your current balance from DESCO's prepaid API
-2. Compares balance against thresholds (150 BDT and 100 BDT)
-3. Sends hilariously aggressive email notifications if thresholds are breached
-4. Logs everything for your viewing pleasure
+1. Validates all required environment variables
+2. Fetches your current balance from DESCO's prepaid API
+3. Validates the API response
+4. Compares balance against configurable thresholds
+5. Sends hilariously aggressive email notifications if thresholds are breached
+6. Logs everything for your viewing pleasure
+
+## Configuration
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `DESCO_ACCOUNT_NO` | ✅ | - | Your DESCO account number |
+| `DESCO_METER_NO` | ✅ | - | Your DESCO meter number |
+| `EMAIL_TO` | ✅ | - | Email recipient |
+| `EMAIL_FROM` | ✅ | - | Email sender |
+| `SMTP_HOST` | ✅ | - | SMTP server hostname |
+| `SMTP_USER` | ✅ | - | SMTP username |
+| `SMTP_PASS` | ✅ | - | SMTP password |
+| `SMTP_PORT` | ❌ | 587 | SMTP port |
+| `LOW_THRESHOLD` | ❌ | 150 | Warning threshold (BDT) |
+| `CRITICAL_THRESHOLD` | ❌ | 100 | Critical threshold (BDT) |
 
 ## Development
 
@@ -107,6 +135,7 @@ npm test
 - **node-fetch** - API requests
 - **nodemailer** - Email notifications
 - **GitHub Actions** - Automated scheduling
+- **Jest** - Testing
 
 ## License
 
@@ -115,3 +144,9 @@ MIT - Use it, modify it, roast yourself with it.
 ## Disclaimer
 
 This tool is for personal use. DESCO's API usage is at your own risk. The savage emails are intentionally over-the-top - adjust the tone in `check-balance.ts` if you prefer gentler reminders.
+
+## Security Notes
+
+- Never commit your `.env` file (it's in `.gitignore`)
+- Use GitHub Secrets for CI/CD, never hardcode credentials
+- The app disables SSL verification for the DESCO API due to certificate issues - be aware of this limitation
