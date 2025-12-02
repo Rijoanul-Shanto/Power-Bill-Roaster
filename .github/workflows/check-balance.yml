@@ -32,4 +32,6 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          LOW_THRESHOLD: ${{ secrets.LOW_THRESHOLD }}
+          CRITICAL_THRESHOLD: ${{ secrets.CRITICAL_THRESHOLD }}
         run: npm run check-balance
