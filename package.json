@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "check-balance": "tsx check-balance.ts",
+    "check-balance": "tsx src/index.ts",
     "build": "tsc"
   },
   "dependencies": {
