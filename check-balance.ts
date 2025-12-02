@@ -330,6 +330,8 @@ async function checkBalance(): Promise<void> {
 
         const balance = apiResponse.data.balance;
         console.log('Current balance:', balance, 'BDT');
+        console.log('Critical Threshold:', CRITICAL_THRESHOLD, 'BDT');
+        console.log('Low Threshold:', LOW_THRESHOLD, 'BDT');
 
         // Send notifications based on thresholds
         // Both emails are sent if balance is critically low
