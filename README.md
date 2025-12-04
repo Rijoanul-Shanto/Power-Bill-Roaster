@@ -11,6 +11,10 @@ Checks your DESCO prepaid electricity balance and sends savage email notificatio
 
 Runs automatically every 6 hours via GitHub Actions, so you'll never be caught off guard by a sudden blackout.
 
+## Screenshots
+<img width="484" height="826" alt="image" src="https://github.com/user-attachments/assets/70212ca2-8a4b-428d-a3c6-5be90eadbf72" />
+<img width="458" height="745" alt="image" src="https://github.com/user-attachments/assets/b8ca6f81-705f-4742-aeef-02ddb0367953" />
+
 ## Setup
 
 ### 1. Clone and Install
